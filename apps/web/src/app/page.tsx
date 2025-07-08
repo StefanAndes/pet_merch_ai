@@ -7,6 +7,7 @@ import { StylePicker, type StyleType } from '@/components/StylePicker'
 import { ResultsGallery } from '@/components/ResultsGallery'
 import { CheckoutFlow } from '@/components/CheckoutFlow'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
+import { config, isSimulationMode, getConfigSummary } from '@/lib/config'
 
 type Step = 'upload' | 'style' | 'generating' | 'results' | 'checkout'
 
@@ -43,7 +44,7 @@ export default function Home() {
       })
       formData.append('style', selectedStyle)
 
-      const response = await fetch('/api/generate', {
+      const response = await fetch(config.apiEndpoint, {
         method: 'POST',
         body: formData,
       })
@@ -69,7 +70,7 @@ export default function Home() {
   const pollGenerationStatus = async (designId: string) => {
     const pollInterval = setInterval(async () => {
       try {
-        const response = await fetch(`/api/generate?id=${designId}`)
+        const response = await fetch(`${config.apiEndpoint}?id=${designId}`)
         const data = await response.json()
         
         setGenerationProgress(data.progress || 0)
@@ -95,7 +96,7 @@ export default function Home() {
         setCurrentStep('style')
         setIsGenerating(false)
       }
-    }, 2000) // Poll every 2 seconds
+    }, config.pollInterval) // Use configurable poll interval
   }
 
   const handleProceedToCheckout = (selectedMockups: string[]) => {
@@ -154,6 +155,27 @@ export default function Home() {
           <p className="text-lg text-gray-600">
             Transform your pet photos into amazing merchandise designs
           </p>
+          
+          {/* Configuration indicator */}
+          <div className="mt-4 inline-flex items-center space-x-2">
+            <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+              isSimulationMode 
+                ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' 
+                : 'bg-green-100 text-green-800 border border-green-200'
+            }`}>
+              {isSimulationMode ? '🎭 Demo Mode' : '🚀 Production Mode'}
+            </div>
+            {isSimulationMode && (
+              <span className="text-xs text-gray-500">
+                Using AI simulation for fast demo
+              </span>
+            )}
+            {!isSimulationMode && (
+              <span className="text-xs text-gray-500">
+                Powered by FLUX.1 + RunPod
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Progress indicator */}
