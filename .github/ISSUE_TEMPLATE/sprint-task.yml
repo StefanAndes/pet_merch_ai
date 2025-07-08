@@ -1,0 +1,95 @@
+name: Sprint Task
+description: Create a new sprint task
+title: "[SPRINT-X] "
+labels: ["task"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Sprint Task Details
+        Please fill out the information below to create a new sprint task.
+  
+  - type: input
+    id: task-id
+    attributes:
+      label: Task ID
+      description: "The unique identifier for this task (e.g., FE-1, BE-2)"
+      placeholder: "FE-1"
+    validations:
+      required: true
+  
+  - type: input
+    id: story-points
+    attributes:
+      label: Story Points
+      description: "Estimated effort in story points"
+      placeholder: "5"
+    validations:
+      required: true
+  
+  - type: dropdown
+    id: sprint
+    attributes:
+      label: Sprint
+      description: Which sprint does this belong to?
+      options:
+        - Sprint 1 (Week 1)
+        - Sprint 2 (Week 2)
+        - Sprint 3 (Week 3)
+        - Sprint 4 (Week 4)
+        - Sprint 5 (Week 5)
+        - Sprint 6 (Week 6)
+    validations:
+      required: true
+  
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: "Detailed description of the task"
+      placeholder: "As a user, I want to..."
+    validations:
+      required: true
+  
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: "List the acceptance criteria for this task"
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
+    validations:
+      required: true
+  
+  - type: textarea
+    id: files
+    attributes:
+      label: Files to be Modified/Created
+      description: "List the files that will be modified or created"
+      placeholder: |
+        - apps/web/components/NewComponent.tsx
+        - apps/web/src/lib/utils.ts
+    validations:
+      required: false
+  
+  - type: checkboxes
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+      description: "Confirm that you will meet the Definition of Done"
+      options:
+        - label: Unit tests will cover happy + error paths
+          required: true
+        - label: Types will pass tsc --noEmit
+          required: true
+        - label: ESLint will be clean
+          required: true
+        - label: PR will include preview deploy link
+          required: true
+        - label: Acceptance tests will be written for user-visible flows
+          required: false
+        - label: CHANGELOG.md will be updated
+          required: true 

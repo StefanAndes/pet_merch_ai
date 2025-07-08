@@ -1,0 +1,44 @@
+{
+  "name": "Pet Merch AI",
+  "short_name": "PetMerch",
+  "description": "Upload your pet photos and get AI-generated custom merchandise",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "/screenshots/upload.png",
+      "type": "image/png",
+      "sizes": "540x720",
+      "label": "Upload your pet photo"
+    },
+    {
+      "src": "/screenshots/styles.png",
+      "type": "image/png",
+      "sizes": "540x720",
+      "label": "Choose from various styles"
+    }
+  ]
+} 
