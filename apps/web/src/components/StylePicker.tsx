@@ -5,7 +5,7 @@ import { Button } from 'ui'
 import { Check } from 'lucide-react'
 import Image from 'next/image'
 
-export type StyleType = 'METAL' | 'POP_ART' | 'WATERCOLOR'
+export type StyleType = 'ROYAL' | 'KNIGHT' | 'SUPERHERO'
 
 interface Style {
   id: StyleType
@@ -18,28 +18,28 @@ interface Style {
 
 const STYLES: Style[] = [
   {
-    id: 'METAL',
-    name: 'Metal Band',
-    description: 'Heavy metal inspired design with vintage distressed look',
-    previewImage: 'https://via.placeholder.com/300x300?text=Metal+Style',
-    prompt: 'vintage metal band t-shirt graphic, high-contrast, distressed texture',
-    example: 'Dark, edgy design with bold typography and grunge effects'
+    id: 'ROYAL',
+    name: 'Royal Portrait',
+    description: 'Transform your pet into nobility with crown, jewels, and regal attire',
+    previewImage: 'https://via.placeholder.com/300x300?text=👑+Royal+Style',
+    prompt: 'royal portrait, renaissance clothing, crown, jewels, ornate background',
+    example: 'Majestic portrait with elaborate royal clothing and golden details'
   },
   {
-    id: 'POP_ART',
-    name: 'Pop Art',
-    description: 'Bright, colorful pop art style with comic book aesthetic',
-    previewImage: 'https://via.placeholder.com/300x300?text=Pop+Art+Style',
-    prompt: 'pop art style, bright colors, comic book aesthetic, halftone dots',
-    example: 'Vibrant colors with bold outlines and comic book effects'
+    id: 'KNIGHT',
+    name: 'Medieval Knight',
+    description: 'Your pet as a brave knight in shining armor with sword and shield',
+    previewImage: 'https://via.placeholder.com/300x300?text=⚔️+Knight+Style',
+    prompt: 'medieval knight, shining armor, sword, shield, castle background',
+    example: 'Heroic warrior portrait with detailed metalwork and epic pose'
   },
   {
-    id: 'WATERCOLOR',
-    name: 'Watercolor',
-    description: 'Soft, artistic watercolor painting style',
-    previewImage: 'https://via.placeholder.com/300x300?text=Watercolor+Style',
-    prompt: 'watercolor painting style, soft brush strokes, artistic, pastel colors',
-    example: 'Gentle, flowing design with soft edges and artistic flair'
+    id: 'SUPERHERO',
+    name: 'Superhero',
+    description: 'Transform your pet into a powerful superhero with cape and costume',
+    previewImage: 'https://via.placeholder.com/300x300?text=🦸+Hero+Style',
+    prompt: 'superhero, cape, costume, dynamic pose, city skyline background',
+    example: 'Dynamic superhero portrait with dramatic lighting and action pose'
   }
 ]
 

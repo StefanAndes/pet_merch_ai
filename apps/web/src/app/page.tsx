@@ -308,7 +308,7 @@ export default function Home() {
           {currentStep === 'results' && results && (
             <ResultsGallery
               designId={designId || ''}
-              style={selectedStyle || 'METAL'}
+              style={selectedStyle || 'ROYAL'}
               generatedImages={results.generatedImages}
               mockups={results.mockups}
               onProceedToCheckout={handleProceedToCheckout}

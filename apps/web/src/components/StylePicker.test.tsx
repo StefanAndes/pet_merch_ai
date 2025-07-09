@@ -26,32 +26,32 @@ describe('StylePicker', () => {
   it('calls onStyleSelect when a style is clicked', () => {
     render(<StylePicker onStyleSelect={mockOnStyleSelect} />)
     
-    const metalStyle = screen.getByText('Metal Band')
-    fireEvent.click(metalStyle.closest('div')!)
+    const royalStyle = screen.getByText('Royal Portrait')
+    fireEvent.click(royalStyle.closest('div')!)
     
-    expect(mockOnStyleSelect).toHaveBeenCalledWith('METAL')
+    expect(mockOnStyleSelect).toHaveBeenCalledWith('ROYAL')
   })
 
   it('shows selection indicator for selected style', () => {
-    render(<StylePicker selectedStyle="POP_ART" onStyleSelect={mockOnStyleSelect} />)
+    render(<StylePicker selectedStyle="KNIGHT" onStyleSelect={mockOnStyleSelect} />)
     
     // Check that the selected style has the checkmark
-    const popArtSection = screen.getByText('Pop Art').closest('div')
-    expect(popArtSection).toHaveClass('ring-2', 'ring-primary', 'ring-offset-2')
+    const knightSection = screen.getByText('Medieval Knight').closest('div')
+    expect(knightSection).toHaveClass('ring-2', 'ring-primary', 'ring-offset-2')
   })
 
   it('shows confirmation message when style is selected', () => {
-    render(<StylePicker selectedStyle="WATERCOLOR" onStyleSelect={mockOnStyleSelect} />)
+    render(<StylePicker selectedStyle="SUPERHERO" onStyleSelect={mockOnStyleSelect} />)
     
-    expect(screen.getByText('Watercolor Style Selected')).toBeInTheDocument()
-    expect(screen.getByText(/Your pet photos will be transformed into a watercolor design/)).toBeInTheDocument()
+    expect(screen.getByText('Superhero Style Selected')).toBeInTheDocument()
+    expect(screen.getByText(/Your pet photos will be transformed into a superhero design/)).toBeInTheDocument()
   })
 
   it('disables interaction when disabled prop is true', () => {
     render(<StylePicker disabled={true} onStyleSelect={mockOnStyleSelect} />)
     
-    const metalStyle = screen.getByText('Metal Band')
-    fireEvent.click(metalStyle.closest('div')!)
+    const royalStyle = screen.getByText('Royal Portrait')
+    fireEvent.click(royalStyle.closest('div')!)
     
     expect(mockOnStyleSelect).not.toHaveBeenCalled()
     
@@ -65,35 +65,35 @@ describe('StylePicker', () => {
   it('shows hover effects on style cards', () => {
     render(<StylePicker onStyleSelect={mockOnStyleSelect} />)
     
-    const metalStyle = screen.getByText('Metal Band').closest('div')!
+    const royalStyle = screen.getByText('Royal Portrait').closest('div')!
     
     // Initially, overlay should be hidden
-    const overlay = metalStyle.querySelector('.absolute.inset-0')
+    const overlay = royalStyle.querySelector('.absolute.inset-0')
     expect(overlay).toHaveClass('opacity-0')
     
     // Hover should show overlay
-    fireEvent.mouseEnter(metalStyle)
+    fireEvent.mouseEnter(royalStyle)
     expect(overlay).toHaveClass('opacity-100')
     
     // Mouse leave should hide overlay
-    fireEvent.mouseLeave(metalStyle)
+    fireEvent.mouseLeave(royalStyle)
     expect(overlay).toHaveClass('opacity-0')
   })
 
   it('does not show hover effects when disabled', () => {
     render(<StylePicker disabled={true} onStyleSelect={mockOnStyleSelect} />)
     
-    const metalStyle = screen.getByText('Metal Band').closest('div')!
+    const royalStyle = screen.getByText('Royal Portrait').closest('div')!
     
-    fireEvent.mouseEnter(metalStyle)
+    fireEvent.mouseEnter(royalStyle)
     
     // Overlay should remain hidden when disabled
-    const overlay = metalStyle.querySelector('.absolute.inset-0')
+    const overlay = royalStyle.querySelector('.absolute.inset-0')
     expect(overlay).toHaveClass('opacity-0')
   })
 
   it('handles all style types correctly', () => {
-    const styleTypes: StyleType[] = ['METAL', 'POP_ART', 'WATERCOLOR']
+    const styleTypes: StyleType[] = ['ROYAL', 'KNIGHT', 'SUPERHERO']
     
     styleTypes.forEach(styleType => {
       const { rerender } = render(<StylePicker selectedStyle={styleType} onStyleSelect={mockOnStyleSelect} />)
@@ -118,13 +118,13 @@ describe('StylePicker', () => {
   it('displays example text on hover', () => {
     render(<StylePicker onStyleSelect={mockOnStyleSelect} />)
     
-    const metalStyle = screen.getByText('Metal Band').closest('div')!
+    const royalStyle = screen.getByText('Royal Portrait').closest('div')!
     
-    fireEvent.mouseEnter(metalStyle)
+    fireEvent.mouseEnter(royalStyle)
     
     // Should show the example text
-    const metalStyleData = STYLES.find(s => s.id === 'METAL')!
-    expect(screen.getByText(metalStyleData.example)).toBeInTheDocument()
+    const royalStyleData = STYLES.find(s => s.id === 'ROYAL')!
+    expect(screen.getByText(royalStyleData.example)).toBeInTheDocument()
   })
 
   it('applies correct CSS classes for responsive design', () => {

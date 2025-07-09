@@ -41,19 +41,19 @@ flux_pipeline = FluxPipeline.from_pretrained(
 )
 print(f"✅ FLUX.1 loaded on {device}")
 
-# Style prompts for different artistic styles
+# Style prompts for premium pet portraits
 STYLE_PROMPTS = {
-    "METAL": {
-        "prompt_suffix": "in a metallic, industrial style with chrome and steel textures, dramatic lighting, cyberpunk aesthetic",
-        "negative_prompt": "soft, organic, natural, warm colors, pastel"
+    "ROYAL": {
+        "prompt_suffix": "as a regal royal portrait, wearing elaborate renaissance clothing with crown and jewels, ornate background with rich fabrics and golden details, classical oil painting style, dramatic lighting, noble pose, high-resolution masterpiece",
+        "negative_prompt": "modern, casual, simple, low quality, blurry, pixelated"
     },
-    "POP_ART": {
-        "prompt_suffix": "in vibrant pop art style, bold colors, comic book aesthetic, Ben-Day dots, high contrast",
-        "negative_prompt": "muted colors, realistic, photographic, dark, gloomy"
+    "KNIGHT": {
+        "prompt_suffix": "as a noble knight in shining armor, medieval warrior with sword and shield, castle background, epic fantasy style, dramatic lighting, heroic pose, detailed metalwork, high-resolution masterpiece",
+        "negative_prompt": "modern, casual, simple, low quality, blurry, pixelated"
     },
-    "WATERCOLOR": {
-        "prompt_suffix": "in soft watercolor painting style, flowing colors, artistic brushstrokes, dreamy, ethereal",
-        "negative_prompt": "sharp edges, digital, mechanical, harsh lighting"
+    "SUPERHERO": {
+        "prompt_suffix": "as a powerful superhero with cape and costume, dynamic action pose, city skyline background, comic book style with dramatic lighting, heroic expression, high-resolution masterpiece",
+        "negative_prompt": "boring, static, simple, low quality, blurry, pixelated"
     }
 }
 
@@ -123,7 +123,7 @@ def analyze_pet_features(image: Image.Image) -> Dict[str, str]:
 def generate_prompt(pet_features: Dict[str, str], style: str) -> tuple[str, str]:
     """Generate optimized prompts for FLUX.1 based on pet analysis and style"""
     
-    style_config = STYLE_PROMPTS.get(style, STYLE_PROMPTS["METAL"])
+    style_config = STYLE_PROMPTS.get(style, STYLE_PROMPTS["ROYAL"])
     
     # Build main prompt
     base_prompt = f"High-quality artistic rendering of an {pet_features['description']}"
@@ -151,9 +151,9 @@ def generate_ai_image(image: Image.Image, style: str) -> Image.Image:
             generated_image = flux_pipeline(
                 prompt=prompt,
                 negative_prompt=negative_prompt,
-                height=512,
-                width=512,
-                num_inference_steps=20,  # Balanced quality/speed
+                height=1024,  # Increased for print quality
+                width=1024,   # Increased for print quality
+                num_inference_steps=28,  # Increased for better quality
                 guidance_scale=7.5,
                 num_images_per_prompt=1
             ).images[0]
@@ -170,14 +170,14 @@ def create_product_mockup(ai_image: Image.Image, product_type: str) -> Image.Ima
     try:
         print(f"📦 Creating {product_type} mockup...")
         
-        # Mockup dimensions and positioning
+        # Mockup dimensions and positioning (updated for high-res images)
         mockup_configs = {
-            "tee": {"size": (300, 300), "position": (150, 200), "canvas": (600, 700)},
-            "hoodie": {"size": (280, 280), "position": (160, 220), "canvas": (600, 700)},
-            "mug": {"size": (200, 150), "position": (200, 250), "canvas": (600, 600)},
-            "tote": {"size": (250, 250), "position": (175, 300), "canvas": (600, 700)},
-            "case": {"size": (180, 320), "position": (210, 100), "canvas": (600, 600)},
-            "poster": {"size": (400, 300), "position": (100, 150), "canvas": (600, 600)}
+            "tee": {"size": (600, 600), "position": (150, 200), "canvas": (900, 1000)},
+            "hoodie": {"size": (560, 560), "position": (170, 250), "canvas": (900, 1000)},
+            "mug": {"size": (400, 300), "position": (250, 300), "canvas": (900, 800)},
+            "tote": {"size": (500, 500), "position": (200, 400), "canvas": (900, 1000)},
+            "case": {"size": (360, 640), "position": (270, 120), "canvas": (900, 900)},
+            "poster": {"size": (800, 600), "position": (50, 150), "canvas": (900, 900)}
         }
         
         config = mockup_configs.get(product_type, mockup_configs["tee"])
