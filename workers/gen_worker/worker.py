@@ -37,16 +37,33 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 flux_pipeline = None
 
 def get_flux_pipeline():
-    """Load FLUX.1 pipeline on first use"""
+    """Load FLUX.1 pipeline on first use with memory optimizations"""
     global flux_pipeline
     if flux_pipeline is None:
         print("📥 Loading FLUX.1 model (first use)...")
+        
+        # Memory optimizations for 16GB GPUs
+        torch.cuda.empty_cache()  # Clear GPU cache
+        
         flux_pipeline = FluxPipeline.from_pretrained(
             "black-forest-labs/FLUX.1-dev", 
             torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-            device_map="auto"
+            device_map="auto",
+            # Memory optimizations
+            variant="fp16" if device == "cuda" else None,
+            use_safetensors=True,
+            low_cpu_mem_usage=True,
+            # Enable CPU offload for tight memory
+            offload_folder="./offload" if device == "cuda" else None
         )
-        print(f"✅ FLUX.1 loaded on {device}")
+        
+        # Additional memory optimizations
+        if device == "cuda":
+            flux_pipeline.enable_attention_slicing()
+            flux_pipeline.enable_model_cpu_offload()
+            # flux_pipeline.enable_sequential_cpu_offload()  # Uncomment if still OOM
+        
+        print(f"✅ FLUX.1 loaded on {device} with memory optimizations")
     return flux_pipeline
 
 # Style prompts for premium pet portraits
@@ -157,6 +174,11 @@ def generate_ai_image(image: Image.Image, style: str) -> Image.Image:
         # Generate image with FLUX.1
         with torch.inference_mode():
             pipeline = get_flux_pipeline()
+            
+            # Clear GPU cache before inference
+            if device == "cuda":
+                torch.cuda.empty_cache()
+            
             generated_image = pipeline(
                 prompt=prompt,
                 negative_prompt=negative_prompt,
@@ -166,6 +188,10 @@ def generate_ai_image(image: Image.Image, style: str) -> Image.Image:
                 guidance_scale=7.5,
                 num_images_per_prompt=1
             ).images[0]
+            
+            # Clear GPU cache after inference
+            if device == "cuda":
+                torch.cuda.empty_cache()
         
         print("✅ AI image generated successfully")
         return generated_image
