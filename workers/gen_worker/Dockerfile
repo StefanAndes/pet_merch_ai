@@ -21,11 +21,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Pre-download FLUX.1 model to reduce cold start time
-RUN python -c "from diffusers import FluxPipeline; FluxPipeline.from_pretrained('black-forest-labs/FLUX.1-dev')"
-
 # Copy worker code
 COPY worker.py .
+
+# Note: FLUX.1 model will be downloaded on first use to avoid build timeouts
 
 # Set environment variables for optimal performance
 ENV PYTHONUNBUFFERED=1

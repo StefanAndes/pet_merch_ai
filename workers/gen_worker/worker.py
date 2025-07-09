@@ -31,15 +31,23 @@ s3_client = boto3.client(
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY
 )
 
-# Initialize FLUX.1 pipeline (loaded once on container start)
-print("🚀 Loading FLUX.1 model...")
+# Initialize FLUX.1 pipeline (loaded on first use to avoid build timeouts)
+print("🚀 Initializing FLUX.1 model loader...")
 device = "cuda" if torch.cuda.is_available() else "cpu"
-flux_pipeline = FluxPipeline.from_pretrained(
-    "black-forest-labs/FLUX.1-dev", 
-    torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-    device_map="auto"
-)
-print(f"✅ FLUX.1 loaded on {device}")
+flux_pipeline = None
+
+def get_flux_pipeline():
+    """Load FLUX.1 pipeline on first use"""
+    global flux_pipeline
+    if flux_pipeline is None:
+        print("📥 Loading FLUX.1 model (first use)...")
+        flux_pipeline = FluxPipeline.from_pretrained(
+            "black-forest-labs/FLUX.1-dev", 
+            torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+            device_map="auto"
+        )
+        print(f"✅ FLUX.1 loaded on {device}")
+    return flux_pipeline
 
 # Style prompts for premium pet portraits
 STYLE_PROMPTS = {
@@ -148,7 +156,8 @@ def generate_ai_image(image: Image.Image, style: str) -> Image.Image:
         
         # Generate image with FLUX.1
         with torch.inference_mode():
-            generated_image = flux_pipeline(
+            pipeline = get_flux_pipeline()
+            generated_image = pipeline(
                 prompt=prompt,
                 negative_prompt=negative_prompt,
                 height=1024,  # Increased for print quality
