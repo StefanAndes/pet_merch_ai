@@ -87,7 +87,7 @@ export const apiConfig = {
 // Storage configuration
 export const storageConfig = {
   bucket: process.env.S3_BUCKET_NAME || 'pet-ai-storage',
-  region: process.env.AWS_REGION || 'us-east-1',
+  region: process.env.AWS_REGION || 'ap-northeast-2',
   publicUrl: process.env.S3_PUBLIC_URL || `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com`
 }
 
